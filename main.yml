@@ -1,0 +1,47 @@
+---
+- hosts: all
+  vars:
+    app_libary_root_dir: /mnt/d/data/software/
+  gather_facts: true
+  roles:
+    - role: comm
+
+
+      vars:
+      tags: comm
+    - role: hadoop
+      vars:
+      tags: hadoop
+    - role: kafka
+      vars:
+      tags: kafka
+    - role: zk
+      vars:
+      tags: zk
+    - role: redis
+      become: yes
+      vars:
+      tags: redis
+    - role: docker
+      become: yes
+      vars:
+      tags: docker
+    - role: conda
+      become: yes
+      vars:
+      tags: conda
+    - role: es
+      become: yes
+      vars:
+      tags: es
+    - role: mongo
+      become: yes
+      vars:
+      tags: es
+
+
+
+
+
+
+

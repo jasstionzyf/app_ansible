@@ -1,0 +1,287 @@
+---
+# hadoop operations
+
+- name: restart datanode
+  shell:  bash -l -c 'hdfs --daemon stop datanode';bash -l -c 'hdfs --daemon start datanode'
+#  when: as_hadoop_slave
+  tags: hadoop_restart_datanode
+  async: 30
+  poll: 2
+- name: restart namenode
+  shell:  bash -l -c 'hdfs --daemon stop namenode';bash -l -c 'hdfs --daemon start namenode'
+  when: as_hadoop_master
+  tags: hadoop_restart_namenode
+  async: 30
+  poll: 2
+
+- name: restart resourcemanager
+  shell:  bash -l -c 'yarn --daemon stop resourcemanager';bash -l -c 'yarn --daemon start resourcemanager'
+  when: as_hadoop_master
+  tags: hadoop_restart_resourcemanager
+  async: 30
+  poll: 2
+- name: restart nodemanager
+  shell:  bash -l -c 'yarn --daemon stop nodemanager';bash -l -c 'yarn --daemon start nodemanager'
+  when: as_hadoop_slave
+  tags: hadoop_restart_nodemanager
+  async: 30
+  poll: 2
+- name: stop nodemanager
+  shell:  bash -l -c 'yarn --daemon stop nodemanager'
+  when: as_hadoop_slave
+  tags: hadoop_stop_all
+  async: 30
+  poll: 2
+- name: stop nodemanager
+  shell:  bash -l -c 'yarn --daemon stop resourcemanager'
+  when: as_hadoop_slave
+  tags: hadoop_stop_all
+  async: 30
+  poll: 2
+- name: stop datanode
+  shell:  bash -l -c  'hdfs --daemon stop datanode'
+#  when: as_hadoop_slave
+  tags: hadoop_stop_all
+  async: 30
+  poll: 2
+- name: stop namenode
+  shell:  bash -l -c  'hdfs --daemon stop namenode'
+#  when: as_hadoop_slave
+  tags: hadoop_stop_all
+  async: 30
+  poll: 2
+
+- name: hadoop home remove
+  become: yes
+  become_user: root
+  tags: hadoop_clean
+  file:
+     path: "{{hadoop_home}}"
+     state: absent
+
+# hp_install: install hadoop and other all things that ready for to config and run  hadoop yarn cluster
+# hp_config:  after hp_install ,  config hadoop yarn related parameters and be ready to running
+# hp_setup: hp_install,hp_config,cgroup_init
+
+- name: hadoop change foler permission
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+  file:
+    path: "{{hadoop_home}}"
+    owner: root
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+    recurse: yes
+    state: directory
+
+- name: upload hadoop to remote machine
+  unarchive:
+    src: "{{hadoop_libary_path}}"
+    dest: "{{remote_hadoop_dir}}"
+    owner: root
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+  tags:
+    - hp_install
+    - hp_setup
+  become: yes
+  become_user: root
+- name: hadoop set up
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+  shell: chmod 6050 {{hadoop_home}}bin/container-executor
+
+
+- name: hadoop change logs folder permission
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+  file:
+    path: "{{hadoop_home}}logs"
+    owner: root
+    group: hadoop
+    mode: u=rwx,g=rwx,o=x
+    recurse: yes
+    state: directory
+
+
+- name: hadoop change config  permission
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+  file:
+    path: "{{hadoop_home}}etc/hadoop/"
+    owner: root
+    group: hadoop
+    mode: u=rw,g=r,o=r
+    recurse: yes
+    state: directory
+- name: hadoop change config  permission
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+  file:
+    path: "{{hadoop_home}}etc/hadoop"
+    owner: root
+    group: hadoop
+    mode: u=rwx,g=rx,o=rx
+    recurse: no
+    state: directory
+
+
+- name: cgroup folder create
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+    - cgroup_init
+  file:
+    path: /sys/fs/cgroup/devices/hadoop-yarn
+    owner: zhaoyufei
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+    recurse: yes
+    state: directory
+- name: cgroup folder create
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+    - cgroup_init
+  file:
+    path: /sys/fs/cgroup/cpu,cpuacct/hadoop-yarn
+    owner: zhaoyufei
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+    recurse: yes
+    state: directory
+
+
+#hadoop config
+
+- name: hadoop config files
+  template:
+    dest: "{{hadoop_home}}etc/hadoop/{{item.dest}}"
+    src: templates/etc/hadoop/{{item.src}}
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: hadoop
+  become: yes
+  become_user: root
+  tags:
+    - hp_config
+    - hp_setup
+  with_items:
+        - {src: 'capacity-scheduler.xml',dest: 'capacity-scheduler.xml'}
+        - {src: 'core-site.xml',dest: 'core-site.xml'}
+        - {src: 'hdfs-site.xml',dest: 'hdfs-site.xml'}
+        - {src: 'yarn-site.xml',dest: 'yarn-site.xml'}
+        - {src: 'resource-types.xml',dest: 'resource-types.xml'}
+        - {src: 'hbase-site.xml',dest: 'hbase-site.xml'}
+
+
+
+
+
+
+
+
+
+- name: container-executor.cfg config
+  template:
+    src: templates/etc/hadoop/container-executor.cfg
+    dest: "{{hadoop_home}}etc/hadoop/container-executor.cfg"
+    owner: root
+    group: hadoop
+    mode: u=-,g=rx,o=-
+  become: yes
+  become_user: root
+  tags:
+    - hp_config
+    - hp_setup
+- name: hadoop env setup
+  template:
+    src: templates/hadoop.sh.j2
+    dest: /etc/profile.d/hadoop.sh
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: yes
+  become_user: root
+  tags:
+    - hp_config
+    - hp_setup
+- name: hadoop env setup
+  template:
+    src: templates/bash.bashrc.j2
+    dest: /etc/bash.bashrc
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  become: yes
+  become_user: root
+  #Debian or RedHat
+  when: ansible_os_family == 'Debian'
+  tags:
+    - hp_config
+    - hp_setup
+
+- name: hbase setup
+  unarchive:
+    src: "{{hbase_libary_path}}"
+    dest: "{{remote_hadoop_dir}}"
+    owner: root
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+  tags: hbase_setup
+  become: yes
+  become_user: root
+- name: hbase home remove
+  become: yes
+  become_user: root
+  tags: hbase_clean
+  file:
+     path: "{{hbase_home}}"
+     state: absent
+
+- name: hbase config
+  template:
+    dest: "{{hbase_home}}conf/{{item.dest}}"
+    src: templates/etc/hadoop/{{item.src}}
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: hadoop
+  become: yes
+  become_user: root
+  tags: hbase_config
+  with_items:
+       - {src: 'hbase-site.xml',dest: 'hbase-site.xml'}
+
+
+
+- name: hbase change logs folder permission
+  become: yes
+  become_user: root
+  tags: hbase_config
+  file:
+    path: "{{hbase_home}}logs"
+    owner: root
+    group: hadoop
+    mode: u=rwx,g=rwx,o=x
+    recurse: yes
+    state: directory
+

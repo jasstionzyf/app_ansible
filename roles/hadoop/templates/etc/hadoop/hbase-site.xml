@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+<property>
+  <name>hbase.cluster.distributed</name>
+  <value>true</value>
+</property>
+<property>
+  <name>hbase.rootdir</name>
+  <value>hdfs://{{as_namenode_address}}:9000/data/hbase</value>
+</property>
+
+    <property>
+      <name>hbase.zookeeper.quorum</name>
+      <value>{{as_namenode_address}}</value>
+
+    </property>
+
+
+    <property>
+        <name>hbase.table.sanity.checks</name>
+        <value>false</value>
+    </property>
+	<!--Prevent coprocessor startup failure regionServer Hang up, resulting in hbase collapse-->
+	<property>
+		<name>hbase.coprocessor.abortonerror</name>
+		<value>false</value>
+	</property>
+
+    <property>
+         <name>hbase.thrift.server.socket.read.timeout</name>
+         <value>6000000</value>
+         <description>eg:milisecond</description>
+</property>
+    <property>
+<name>hbase.thrift.connection.max-idletime</name>
+<value>1800000</value>
+</property>
+
+</configuration>
+

@@ -1,0 +1,44 @@
+---
+
+#should place within host vars
+#kafka_log_dirs: /data5/kafka-logs/
+#remote_kafka_dir: /data/apps/
+#kafka_home: "{{remote_kafka_dir}}{{kafka_version}}/"
+
+
+
+
+
+kafka_version: kafka_2.12-2.4.0
+kafka_libary_dir: /mnt/d/data/software/kafka/{{kafka_version}}.tgz
+
+
+
+appName: kafka_2.12-2.4.0
+
+
+#kafka sever config, those config also can be placed on host env
+zk_host: vb0.dev.yufei.com:2181
+
+
+#24 hours
+retention_hours: 24
+#512M
+retention_bytes: 512000000
+
+rebalance_delay_ms: 0
+
+num_partitions: 10
+
+
+
+
+
+
+
+
+
+
+
+
+

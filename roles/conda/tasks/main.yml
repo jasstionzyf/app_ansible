@@ -1,0 +1,89 @@
+
+- name: Download Miniconda
+  tags: conda_install
+  get_url:
+    url: https://repo.continuum.io/miniconda/Miniconda3-{{miniconda_version}}-Linux-x86_64.sh
+    dest: /tmp/install-miniconda.sh
+    mode: 0550
+#- name: Create conda folder
+#  become: yes
+#  become_user: root
+#  tags: conda_install
+#  file:
+#    path: /opt/miniconda3
+#    state: directory
+#    owner: root
+#    group: root
+#    recurse: yes
+
+- name: make sure all related folders present, if present do nothing
+  become: yes
+  become_user: root
+  tags: conda_install
+  file:
+    path: "{{item}}"
+    owner: zhaoyufei
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+    recurse: yes
+    state: directory
+  loop:
+    - "{{app_logRootDir}}{{appName}}/"
+    - "{{app_dataRootDir}}{{appName}}/"
+    - "{{app_confRootDir}}{{appName}}/"
+    - "{{app_rootDir}}{{appName}}/"
+- name: Run the installer
+  become: yes
+  become_user: root
+  tags: conda_install
+  shell: /tmp/install-miniconda.sh -b -u -p {{app_rootDir}}{{appName}}/
+- name: Remove the installer
+  tags: conda_install
+  file:
+    state: absent
+    path: /tmp/install-miniconda.sh
+- name: Add miniconda bin to path
+  become: yes
+  become_user: root
+  tags: conda_install
+  shell: echo 'export PATH={{app_rootDir}}{{appName}}/bin:$PATH' >> /etc/profile
+
+- name: conda - execution permission for all
+  become: yes
+  become_user: root
+  tags: conda_install
+  file:
+    path: "{{app_rootDir}}{{appName}}/bin"
+    mode: u=rwx,g=rx,o=rx
+    recurse: yes
+
+
+- name: conda init otherwise bash conda activate not work
+  become: yes
+  become_user: root
+  tags: conda_install
+  command: "{{app_rootDir}}{{appName}}/bin/conda init bash"
+# conda_envadd
+- name: conda add a env given a env name using --extra-vars 'envName=imageAI'
+  become: yes
+  become_user: root
+  tags: conda_envadd
+  command: "{{app_rootDir}}{{appName}}/bin/conda create --force -y -n {{envName}} python=3.8"
+- name: upload requirement.txt to remote machine
+  template:
+    dest: "{{app_rootDir}}{{appName}}/envs/{{envName}}/"
+    src: templates/{{pip_requirements_name}}.txt
+    mode: u=rw,g=r,o=r
+    owner: zhaoyufei
+    group: hadoop
+  become: yes
+  become_user: root
+  tags: pip_packages_install
+
+- name: Install specified python requirements within a conda env
+  become: yes
+  become_user: root
+  tags: pip_packages_install
+  pip:
+    requirements: "{{app_rootDir}}{{appName}}/envs/{{envName}}/{{pip_requirements_name}}.txt"
+    executable: "{{pip_path}}"

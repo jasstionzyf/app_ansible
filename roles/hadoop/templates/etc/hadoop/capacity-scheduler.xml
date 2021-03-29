@@ -1,0 +1,224 @@
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+    <property>
+        <name>yarn.scheduler.capacity.maximum-applications</name>
+        <value>100</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.maximum-am-resource-percent</name>
+        <value>1.0</value>
+    </property>
+
+
+
+     <!--<property>-->
+        <!--<name>yarn.scheduler.capacity.root.yufei.maximum-am-resource-percent</name>-->
+        <!--<value>100</value>-->
+    <!--</property>-->
+
+
+    <property>
+        <name>yarn.scheduler.capacity.resource-calculator</name>
+        <value>org.apache.hadoop.yarn.util.resource.DominantResourceCalculator</value>
+    </property>
+    <!--queue property-->
+
+    <property>
+    <name>yarn.scheduler.capacity.root.yufei.user-limit-factor</name>
+    <value>1</value>
+  </property>
+    <property>
+    <name>yarn.scheduler.capacity.root.yufei.maximum-capacity</name>
+    <value>100</value>
+  </property>
+    <property>
+    <name>yarn.scheduler.capacity.root.yufei.minimum-userlimit-Percent</name>
+    <value>100</value>
+  </property>
+
+      <property>
+    <name>yarn.scheduler.capacity.root.comm.user-limit-factor</name>
+    <value>1</value>
+  </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.queues</name>
+        <value>comm,yufei</value>
+    </property>
+     <property>
+        <name>yarn.scheduler.capacity.root.capacity</name>
+        <value>100</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.capacity</name>
+        <value>50</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.capacity</name>
+        <value>50</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.maximum-capacity</name>
+        <value>100</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.maximum-capacity</name>
+        <value>100</value>
+    </property>
+    <!--queue admin-->
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.state</name>
+        <value>RUNNING</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.state</name>
+        <value>RUNNING</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.acl_submit_applications</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.acl_administer_queue</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.acl_submit_applications</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.acl_administer_queue</name>
+        <value>*</value>
+    </property>
+    <!-- queue mapping based on user or group, user & group, or application name. User can also define their own placement rule: -->
+    <property>
+        <name>yarn.scheduler.capacity.queue-mappings</name>
+        <value></value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.queue-mappings-override.enable</name>
+        <value>false</value>
+    </property>
+    <!-- application lifetime -->
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.maximum-application-lifetime
+        </name>
+        <value>-1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.maximum-application-lifetime
+        </name>
+        <value>-1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.default-application-lifetime
+        </name>
+        <value>-1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.comm.default-application-lifetime
+        </name>
+        <value>-1</value>
+    </property>
+
+    <!--nodel labels-->
+ <property>
+        <name>yarn.scheduler.capacity.root.accessible-node-labels</name>
+        <value>master,slaves</value>
+    </property>
+     <property>
+        <name>yarn.scheduler.capacity.root.accessible-node-labels.master.capacity</name>
+        <value>100</value>
+    </property>
+     <property>
+        <name>yarn.scheduler.capacity.root.accessible-node-labels.slaves.capacity</name>
+        <value>100</value>
+    </property>
+
+
+      <property>
+    <name>yarn.scheduler.capacity.root.accessible-node-labels.master.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+     <property>
+        <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels</name>
+        <value>master,slaves</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels.master.capacity</name>
+        <value>100</value>
+    </property>
+
+      <property>
+    <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels.master.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+      <property>
+    <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels.slaves.maximum-capacity</name>
+    <value>100</value>
+  </property>
+
+     <property>
+        <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels.master.maximum-am-resource-percent</name>
+        <value>1.0</value>
+    </property>
+   <property>
+        <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels.slaves.maximum-am-resource-percent</name>
+        <value>1.0</value>
+    </property>
+      <property>
+        <name>yarn.scheduler.capacity.root.comm.accessible-node-labels</name>
+        <value>slaves</value>
+    </property>
+      <property>
+        <name>yarn.scheduler.capacity.root.comm.accessible-node-labels.slaves.capacity</name>
+        <value>50</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.yufei.accessible-node-labels.slaves.capacity</name>
+        <value>50</value>
+    </property>
+      <!--<property>-->
+        <!--<name>yarn.scheduler.capacity.root.comm.default-node-label-expression</name>-->
+        <!--<value>slaves</value>-->
+    <!--</property>-->
+     <!--<property>-->
+        <!--<name>yarn.scheduler.capacity.root.yufei.default-node-label-expression</name>-->
+        <!--<value>slaves</value>-->
+    <!--</property>-->
+
+
+
+    <!-- others properties-->
+    <property>
+        <name>yarn.scheduler.capacity.node-locality-delay</name>
+        <value>40</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.rack-locality-additional-delay</name>
+        <value>-1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.per-node-heartbeat.maximum-offswitch-assignments</name>
+        <value>1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.application.fail-fast</name>
+        <value>false</value>
+    </property>
+
+
+</configuration>

@@ -1,0 +1,417 @@
+<?xml version="1.0"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+
+    <property>
+		    <name>yarn.resourcemanager.hostname</name>
+		        <value>{{as_namenode_address}}</value>
+			  </property>
+
+	<property>
+		    <name>yarn.webapp.ui2.enable</name>
+		        <value>true</value>
+			  </property>
+<!-- gpu related -->
+{% if as_hadoop_slave and as_gpu %}
+
+    <property>
+    <name>yarn.nodemanager.resource-plugins.gpu.docker-plugin</name>
+    <value>nvidia-docker-v2</value>
+  </property>
+
+     <property>
+    <name>yarn.nodemanager.resource-plugins</name>
+    <value>yarn.io/gpu</value>
+  </property>
+
+     <property>
+    <name>yarn.nodemanager.resource-plugins.gpu.allowed-gpu-devices</name>
+    <value>0:0</value>
+  </property>
+    <property>
+    <name>yarn.nodemanager.resource-plugins.gpu.path-to-discovery-executables</name>
+    <value>/etc/alternatives/x86_64-linux-gnu_nvidia_smi</value>
+  </property>
+
+
+
+
+
+
+{% endif %}
+
+<property>
+<name>yarn.resourcemanager.address</name>
+<value>{{as_resourcemanager_address}}:8032</value>
+</property>
+
+
+
+
+    <property>
+    <name>yarn.nodemanager.linux-container-executor.resources-handler.class</name>
+    <value>org.apache.hadoop.yarn.server.nodemanager.util.CgroupsLCEResourcesHandler</value>
+  </property>
+
+
+ <!--<property>-->
+    <!--<name>yarn.nodemanager.linux-container-executor.cgroups.mount</name>-->
+    <!--<value>true</value>-->
+<!--</property>-->
+
+     <!--<property>-->
+    <!--<name>yarn.nodemanager.linux-container-executor.cgroups.mount-path</name>-->
+    <!--<value>/sys/fs/cgroup/</value>-->
+<!--</property>-->
+
+
+<property>
+        <name>yarn.nodemanager.local-dirs</name>
+        <value>{{as_local_dirs}}</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-dirs</name>
+        <value>{{as_log_dirs}}</value>
+    </property>
+
+<property>
+        <name>yarn.log-aggregation-enable</name>
+        <value>true</value>
+    </property>
+<property>
+        <name>yarn.nodemanager.remote-app-log-dir</name>
+        <value>hdfs://{{as_resourcemanager_address}}:9000/data/yarn/logs/</value>
+</property>
+
+
+    <property>
+        <name>yarn.nodemanager.address</name>
+<value>0.0.0.0:8034</value>
+</property>
+
+    <property>
+
+<name>yarn.nodemanager.resource.memory-mb</name>
+<value>{{as_memory_mb}}</value> <!-- 40 GB -->
+</property>
+<property>
+<name>yarn.nodemanager.resource.cpu-vcores</name>
+<value>{{as_cpu_vcores}}</value> <!-- 40 GB -->
+</property>
+
+    <property>
+<name>yarn.resourcemanager.resource-tracker.address</name>
+<value>{{as_resourcemanager_address}}:8031</value>
+</property>
+<property>
+<name>yarn.resourcemanager.scheduler.address</name>
+<value>{{as_resourcemanager_address}}:8030</value>
+</property>
+
+<property>
+<name>yarn.nodemanager.vmem-check-enabled</name>
+<value>false</value>
+</property>
+
+
+
+
+
+
+<property>
+    <name>yarn.nodemanager.container-executor.class</name>
+    <value>org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor</value>
+    <description>
+      This is the container executor setting that ensures that all applications
+      are started with the LinuxContainerExecutor.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.group</name>
+    <value>hadoop</value>
+    <description>
+      The POSIX group of the NodeManager. It should match the setting in
+      "container-executor.cfg". This configuration is required for validating
+      the secure access of the container-executor binary.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit-users</name>
+    <value>false</value>
+    <description>
+      Whether all applications should be run as the NodeManager process' owner.
+      When false, applications are launched instead as the application owner.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.allowed-runtimes</name>
+    <value>default,docker</value>
+    <description>
+      Comma separated list of runtimes that are allowed when using
+      LinuxContainerExecutor. The allowed values are default, docker, and
+      javasandbox.
+    </description>
+  </property>
+
+<property>
+    <name>yarn.nodemanager.runtime.linux.type</name>
+    <value></value>
+    <description>
+      Optional. Sets the default container runtime to use.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.image-name</name>
+    <value></value>
+    <description>
+      Optional. Default docker image to be used when the docker runtime is
+      selected.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.allowed-container-networks</name>
+    <value>host,none,bridge</value>
+    <description>
+      Optional. A comma-separated set of networks allowed when launching
+      containers. Valid values are determined by Docker networks available from
+      `docker network ls`
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.default-container-network</name>
+    <value>host</value>
+    <description>
+      The network used when launching Docker containers when no
+      network is specified in the request. This network must be one of the
+      (configurable) set of allowed container networks.
+    </description>
+  </property>
+
+<property>
+    <name>yarn.nodemanager.runtime.linux.docker.host-pid-namespace.allowed</name>
+    <value>false</value>
+    <description>
+      Optional. Whether containers are allowed to use the host PID namespace.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.privileged-containers.allowed</name>
+    <value>false</value>
+    <description>
+      Optional. Whether applications are allowed to run in privileged
+      containers. Privileged containers are granted the complete set of
+      capabilities and are not subject to the limitations imposed by the device
+      cgroup controller. In other words, privileged containers can do almost
+      everything that the host can do. Use with extreme care.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.delayed-removal.allowed</name>
+    <value>false</value>
+    <description>
+      Optional. Whether or not users are allowed to request that Docker
+      containers honor the debug deletion delay. This is useful for
+      troubleshooting Docker container related launch failures.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.stop.grace-period</name>
+    <value>10</value>
+    <description>
+      Optional. A configurable value to pass to the Docker Stop command. This
+      value defines the number of seconds between the docker stop command sending
+      a SIGTERM and a SIGKILL.
+    </description>
+  </property>
+<property>
+    <name>yarn.nodemanager.runtime.linux.docker.privileged-containers.acl</name>
+    <value></value>
+    <description>
+      Optional. A comma-separated list of users who are allowed to request
+      privileged containers if privileged containers are allowed.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.capabilities</name>
+    <value>CHOWN,DAC_OVERRIDE,FSETID,FOWNER,MKNOD,NET_RAW,SETGID,SETUID,SETFCAP,SETPCAP,NET_BIND_SERVICE,SYS_CHROOT,KILL,AUDIT_WRITE</value>
+    <description>
+      Optional. This configuration setting determines the capabilities
+      assigned to docker containers when they are launched. While these may not
+      be case-sensitive from a docker perspective, it is best to keep these
+      uppercase. To run without any capabilites, set this value to
+      "none" or "NONE"
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.enable-userremapping.allowed</name>
+    <value>true</value>
+    <description>
+      Optional. Whether docker containers are run with the UID and GID of the
+      calling user.
+    </description>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.runtime.linux.docker.userremapping-uid-threshold</name>
+    <value>1</value>
+    <description>
+      Optional. The minimum acceptable UID for a remapped user. Users with UIDs
+      lower than this value will not be allowed to launch containers when user
+      remapping is enabled.
+    </description>
+  </property>
+
+
+<property>
+    <name>yarn.nodemanager.runtime.linux.docker.userremapping-gid-threshold</name>
+    <value>1</value>
+    <description>
+      Optional. The minimum acceptable GID for a remapped user. Users belonging
+      to any group with a GID lower than this value will not be allowed to
+      launch containers when user remapping is enabled.
+    </description>
+  </property>
+
+
+
+      <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>90000</value>
+
+
+  </property>
+     <property>
+    <name>yarn.scheduler.maximum-allocation-vcores</name>
+    <value>100</value>
+
+
+  </property>
+
+
+
+
+    <!--{%if as_hadoop_slave %}-->
+
+<!--{% endif %}-->
+<!--node label support -->
+
+     <property>
+    <name>yarn.node-labels.fs-store.root-dir</name>
+    <value>hdfs://{{as_namenode_address}}:9000/data/node-labels/</value>
+
+
+  </property>
+     <property>
+    <name>yarn.node-labels.enabled</name>
+    <value>true</value>
+
+
+  </property>
+     <property>
+    <name>yarn.node-labels.configuration-type</name>
+    <value>centralized</value>
+
+
+  </property>
+
+
+    <!--capacity-scheduler -->
+
+
+     <property>
+    <name>yarn.scheduler.configuration.store.class</name>
+    <value>file</value>
+
+
+  </property>
+
+      <property>
+    <name>yarn.resourcemanager.scheduler.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+
+
+  </property>
+
+
+
+    <!--<property>-->
+  <!--<name>hadoop.zk.address</name>-->
+  <!--<value>172.16.241.100:2181</value>-->
+<!--</property>-->
+
+
+<!--timeline-service -->
+
+
+
+     <property>
+    <name>yarn.timeline-service.hostname</name>
+    <value>{{as_namenode_address}}</value>
+    </property>
+
+     <!--<property>-->
+    <!--<name>yarn.timeline-service.enabled</name>-->
+    <!--<value>hbase-site.xml</value>-->
+    <!--</property>-->
+
+
+
+
+
+    <property>
+  <name>yarn.timeline-service.version</name>
+  <value>2.0f</value>
+</property>
+
+<property>
+  <name>yarn.timeline-service.enabled</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>yarn.nodemanager.aux-services</name>
+  <value>mapreduce_shuffle,timeline_collector</value>
+</property>
+
+<property>
+  <name>yarn.nodemanager.aux-services.timeline_collector.class</name>
+  <value>org.apache.hadoop.yarn.server.timelineservice.collector.PerNodeTimelineCollectorsAuxService</value>
+</property>
+
+<property>
+  <description>The setting that controls whether yarn system metrics is
+  published on the Timeline service or not by RM And NM.</description>
+  <name>yarn.system-metrics-publisher.enabled</name>
+  <value>true</value>
+</property>
+
+
+
+
+
+
+
+</configuration>

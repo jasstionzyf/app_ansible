@@ -1,0 +1,15 @@
+---
+users:
+  - username: test4
+    use_sudo: no
+    groups: hadoop
+
+
+
+
+
+
+
+
+
+

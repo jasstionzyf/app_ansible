@@ -1,0 +1,33 @@
+---
+
+#should place within host vars
+#kafka_log_dirs: /data5/kafka-logs/
+#remote_kafka_dir: /data/apps/
+#kafka_home: "{{remote_kafka_dir}}{{kafka_version}}/"
+
+
+
+
+
+app_version:  mongodb-linux-x86_64-3.2.4
+app_libary_path: /mnt/d/data/software/mongodb/{{app_version}}.tgz
+
+
+
+appName: mongodb-linux-x86_64-3.2.4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

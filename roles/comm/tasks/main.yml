@@ -1,0 +1,350 @@
+---
+#- name: test task 1
+#  shell: echo {{ as_test  }}
+#  #hostvars['gpu0.dev']['vars']['as_log_dirs']
+#  tags: comm_test_task1
+#  register: comm_test_task1_out
+#
+#- debug: var=comm_test_task1_out.stdout_lines
+#  tags: comm_test_task1
+#- name: test task 2
+#  command: bash -l -c ifconfig
+#  tags: comm_test_task2
+#  register: comm_test_task2_out
+#- debug: var=comm_test_task2_out.stdout_lines
+#  tags: comm_test_task2
+
+#- name: set privilidge for imageAI project at remote machine
+#  file:
+#    path: /data/scripts/
+#    owner: zhaoyufei
+#    group: hadoop
+#    mode: u=rwx,g=rx,o=rx
+#    recurse: yes
+#    state: directory
+#  tags: imageAI_deploy
+#  become: yes
+#  become_user: root
+
+
+#- name: Include vars of users.yml to users
+#  include_vars:
+#    file: vars/users.yml
+#    name: users
+
+
+#- name: Show the uptime in a certain format
+#  tags: test
+#  ansible.builtin.debug:
+#   msg: "{{test['es_config']['discovery_seed_hosts']|array_to_str}}"
+- name: test roles global var
+  tags: global_var_test
+  debug:
+    msg: "{{app_libary_root_dir}}"
+
+- name: show templating results
+  tags: test
+  debug:
+    msg: "{{ lookup('template', './templates/test.j2') }}"
+
+- name: force kill a process given a identify
+  become: yes
+  become_user: root
+  tags: pkill
+  shell: ps -ef|grep {{pid}}|grep -v grep|awk {'print $2'}|xargs  sudo kill -9
+- name: Test hosts list
+  tags: get_ip
+  debug:
+    msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+- name: ubuntu change ip to static
+  become: yes
+  become_user: root
+  tags: static_ip
+  template:
+    dest: "{{netplan_cfg}}"
+    src: netcfg.yml
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: root
+
+
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+  become: yes
+  become_user: root
+
+- name: Set a hostname
+  become: yes
+  become_user: root
+  tags: setHostName
+  ansible.builtin.hostname:
+    name: "{{as_hostname}}"
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  become: yes
+  become_user: root
+- name: add groups
+  group:
+    name: "{{item.groups}}"
+    state: present
+  with_items: "{{users}}"
+  tags: user_create
+  become: yes
+  become_user: root
+
+- name: Add users | create users, shell, home dirs
+  user:
+      name: "{{item.username}}"
+      shell: /bin/bash
+      create_home: yes
+      comment: create with ansible
+      groups: "{{ item.groups }}"
+  with_items: "{{users}}"
+  tags: user_create,ssh_setup
+  become: yes
+  become_user: root
+
+
+#- name: Add users | create users, shell, home dirs
+#
+#  tags: user_create
+#  become: yes
+#  become_user: root
+
+
+
+
+
+- name: deploy imageAI project to server
+  synchronize:
+    src: /mnt/c/data/projects/imageAI
+    dest: /data/projects/tf2/
+    rsync_opts:
+      - "--no-motd"
+      - "--exclude=.git"
+  tags: imageAI2_deploy
+- name: deploy imageAI project to server
+#  pip:
+#    name: some_package_name
+#    executable: "/data/miniconda3/envs/imageAI2/bin/pip"
+  command:
+    cmd: /data/miniconda3/envs/imageAI2/bin/pip install ./imageAI/.
+    chdir: /data/projects/tf2/
+
+  tags: imageAI2_deploy
+
+- name: deploy imageAI project to server
+  synchronize:
+    src: /mnt/c/data/projects/imageAI
+    dest: /data/projects/
+    rsync_opts:
+      - "--no-motd"
+      - "--exclude=.git"
+  tags: imageAI_deploy
+- name: deploy imageCaption project to server
+  synchronize:
+    src: /Volumes/v2/data/projects/my_work/imageCaption
+    dest: /data/projects/
+    rsync_opts:
+      - "--no-motd"
+      - "--exclude=.git"
+  tags: imageCaption_deploy
+
+
+- name: upload file to remote machine
+  synchronize:
+    src: /Volumes/v2/vcgImageAI/vcgImageAI.zip
+    dest: /home/zhaoyufei/vcgImageAI.zip
+  tags: local_to_hdfs
+
+- name: upload remote file to hdfs
+  command: bash -l -c 'hadoop fs -put -f /home/zhaoyufei/vcgImageAI.zip /data/stuff/'
+  register: hdfs_out
+
+  tags: local_to_hdfs
+
+- debug: var=hdfs_out.stdout_lines
+  tags: local_to_hdfs
+
+
+
+
+
+
+- name: host file update - Local DNS setup across all the servers also need to remove old domain
+  tags: update_hosts
+  become: yes
+  become_user: root
+  lineinfile:
+    path: /etc/hosts
+    line: "{{item.ip}} \t {{item.domain}}"
+    create: yes
+  with_items: "{{vbs_domains}}"
+  #lookup('vars',as_hostname+'_domains' )
+
+
+
+
+#- name: set server env, like:
+- name: create ssh folder
+  tags: ssh_setup
+  become: yes
+  become_user: root
+  file:
+    path: /home/{{item.username}}/.ssh
+    owner: "{{item.username}}"
+    group: "{{item.groups}}"
+    mode: u=rwx,g=,o=
+    recurse: no
+    state: directory
+  with_items: "{{users}}"
+- name: update ssh config file
+  become: yes
+  become_user: root
+  tags: ssh_setup
+  template:
+    dest: /etc/ssh/sshd_config
+    src: sshd_config
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: root
+
+- name: restart_ssh
+  become: yes
+  become_user: root
+  tags: ssh_setup
+  service:
+    name: sshd
+    state: restarted
+- name: copy private key
+  tags: ssh_setup
+  become: yes
+  become_user: root
+  copy:
+    src: "{{comm_libarys_path}}ssh/id_rsa"
+    dest: /home/{{item.username}}/.ssh/id_rsa
+    owner: "{{item.username}}"
+    group: "{{item.groups}}"
+    mode: u=rw,g=,o=
+  with_items: "{{users}}"
+
+- name: set up pub key
+  become: yes
+  become_user: root
+  tags: ssh_setup
+  authorized_key:
+    user: "{{item.username}}"
+    key: "{{ lookup('file', '{{comm_libarys_path}}ssh/id_rsa.pub') }}"
+    state: present
+  with_items: "{{users}}"
+
+
+
+
+
+
+
+
+- name: Allow 'sudo' group to have passwordless sudo
+  tags: passwordless_sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  become: yes
+  become_user: root
+
+
+- name: Remove the java_home
+  become: yes
+  become_user: root
+  tags: jdk_present
+  file:
+    state: absent
+    path: "{{java_home}}"
+- name: set up jdk
+  become: yes
+  become_user: root
+  tags: jdk_present
+  file:
+    path: "{{java_home}}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+
+- name: set up jdk
+  become: yes
+  become_user: root
+  tags: jdk_present
+  unarchive:
+    src: "{{comm_libarys_path}}java/jdk-8u71-linux-x64.tar.gz"
+    dest: "{{java_home_prefix}}"
+    owner: root
+    group: root
+
+- name: set up jdk
+  become: yes
+  become_user: root
+  tags: jdk_present
+  file:
+    path: "{{java_home}}bin"
+    mode: u=rwx,g=rx,o=rx
+    recurse: yes
+
+- name: set up jdk
+  become: yes
+  become_user: root
+  tags: jdk_present
+  template:
+    dest: /etc/profile.d/jdk.sh
+    src: templates/jdk.sh.j2
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: root
+- name: init disk to a filesystem
+  become: yes
+  become_user: root
+  tags: disk_mount
+  community.general.filesystem:
+    fstype: ext4
+    dev: /dev/sdb
+#    opts: -cc
+- name: make sure mount path exist
+  become: yes
+  become_user: root
+  tags: disk_mount
+  file:
+    path: /data/
+    state: directory
+    owner: zhaoyufei
+    group: hadoop
+    recurse: yes
+- name: Mount File System
+  become: yes
+  become_user: root
+  tags: disk_mount
+  mount:
+    path: /data/
+    src: /dev/sdb
+    fstype: ext4
+    state: mounted
+
+
+
+
+
+
+
+

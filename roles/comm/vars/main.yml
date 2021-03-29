@@ -1,0 +1,70 @@
+---
+java_version: jdk1.8.0_71
+java_home_prefix: /usr/local/jdk/
+java_home: "{{java_home_prefix}}{{java_version}}"
+
+comm_libarys_path:  /mnt/d/data/software/
+
+comm_user: zhaoyufei
+
+as_test: "{{java_home}}{{comm_user}}"
+
+
+
+
+users:
+  - username: hadoop
+    use_sudo: yes
+    groups: hadoop
+  - username: zhaoyufei
+    use_sudo: yes
+    groups: sudo
+
+
+#  - username: test2
+#    use_sudo: no
+#    groups: hadoop
+
+
+
+
+
+domains:
+  - ip: 172.16.104.220
+    domain: primary.dev.vcg.com
+  - ip: 172.16.108.176
+    domain: gpu0.dev.vcg.com
+  - ip: 172.16.237.152
+    domain: gpu1.dev.vcg.com
+
+vbs_domains:
+  - ip: 192.168.3.22
+    domain: vb1.dev.yufei.com
+  - ip: 192.168.3.23
+    domain: vb2.dev.yufei.com
+  - ip: 192.168.3.21
+    domain: vb0.dev.yufei.com
+
+
+
+
+
+
+test:
+  cluster:
+    initial_master_nodes:
+      - 127.0.0.1
+      - 145.o.o.3
+  es_config:
+    node.name: node1
+    cluster.name: custom-cluster
+    cluster.discovery_seed_hosts:
+      - 127.0.0.1
+      - 128.0.0.1
+
+
+
+
+
+
+

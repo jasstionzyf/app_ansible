@@ -1,0 +1,23 @@
+---
+hadoop_version: hadoop-3.2.1
+remote_hadoop_dir: /data/apps/
+
+hbase_version: hbase-2.2.4
+hbase_libary_path: /Volumes/v1/data/software/hbase/{{hbase_version}}-bin.tar.gz
+hadoop_libary_path: /Volumes/v1/data/software/hadoop/{{hadoop_version}}.tar.gz
+
+
+hadoop_home: "{{remote_hadoop_dir}}{{hadoop_version}}/"
+hbase_home: "{{remote_hadoop_dir}}{{hbase_version}}/"
+spark_version: spark-3.0.0-preview2-bin-hadoop3.2
+spark_home: "{{remote_hadoop_dir}}{{spark_version}}/"
+
+
+
+
+
+
+
+
+
+

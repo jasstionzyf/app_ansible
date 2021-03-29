@@ -1,0 +1,33 @@
+---
+
+#should place within host vars
+#kafka_log_dirs: /data5/kafka-logs/
+#remote_kafka_dir: /data/apps/
+#kafka_home: "{{remote_kafka_dir}}{{kafka_version}}/"
+
+
+
+
+
+app_version:  redis-5.0.0
+app_libary_path: /mnt/d/data/software/redis/{{app_version}}.tar.gz
+
+
+
+appName: redis-5.0.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

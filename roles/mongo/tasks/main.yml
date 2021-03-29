@@ -1,0 +1,52 @@
+- name: start app
+  shell:  bash -l -c ' nohup {{app_rootDir}}{{appName}}/bin/mongod -f {{app_confRootDir}}{{appName}}/mongod.conf &'
+#  when: as_hadoop_slave
+  tags: mongo_start
+  async: 30
+  poll: 2
+
+
+- name: make sure all related folders present, if present do nothing
+  become: yes
+  become_user: root
+  tags: mongo_install
+  file:
+    path: "{{item}}"
+    owner: zhaoyufei
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+    recurse: yes
+    state: directory
+  loop:
+    - "{{app_logRootDir}}{{appName}}/"
+    - "{{app_dataRootDir}}{{appName}}/"
+    - "{{app_confRootDir}}{{appName}}/"
+    - "{{app_rootDir}}{{appName}}/"
+
+- name: upload app and unzip to  remote machine
+  become: yes
+  become_user: root
+  tags: mongo_install
+  unarchive:
+    src: "{{app_libary_path}}"
+    dest: "{{app_rootDir}}{{appName}}/"
+    extra_opts: [--strip-components=1]
+    owner: zhaoyufei
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+
+
+- name: app config files
+  template:
+    dest: "{{app_confRootDir}}{{appName}}/{{item.dest}}"
+    src: templates/{{item.src}}
+    mode: u=rw,g=r,o=r
+    owner: zhaoyufei
+    group: hadoop
+  become: yes
+  become_user: root
+  tags: mongo_config
+  with_items:
+        - {src: 'mongod.conf',dest: 'mongod.conf'}
+
+
