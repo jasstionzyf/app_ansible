@@ -37,6 +37,18 @@
 #  tags: test
 #  ansible.builtin.debug:
 #   msg: "{{test['es_config']['discovery_seed_hosts']|array_to_str}}"
+- name: Print all available facts
+  tags: facts_debug
+  ansible.builtin.debug:
+    var: ansible_facts
+- name: "Ansible | List all known variables and facts"
+  tags: list
+  debug:
+    var: hostvars[inventory_hostname]
+- name:
+  tags: app_rootDir
+  debug:
+    msg: "{{app_rootDir}}"
 - name: test roles global var
   tags: global_var_test
   debug:
@@ -140,7 +152,7 @@
     cmd: /data/miniconda3/envs/imageAI2/bin/pip install ./imageAI/.
     chdir: /data/projects/tf2/
 
-  tags: imageAI2_deploy
+  tags: imageAI2_deploy_depreacted
 
 - name: deploy imageAI project to server
   synchronize:
