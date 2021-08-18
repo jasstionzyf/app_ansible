@@ -68,7 +68,6 @@
   tags: get_ip
   debug:
     msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
-
 - name: ubuntu change ip to static
   become: yes
   become_user: root
@@ -114,12 +113,13 @@
   become_user: root
 
 - name: Add users | create users, shell, home dirs
-  user:
+  ansible.builtin.user:
       name: "{{item.username}}"
       shell: /bin/bash
       create_home: yes
       comment: create with ansible
       groups: "{{ item.groups }}"
+      append: yes
   with_items: "{{users}}"
   tags: user_create,ssh_setup
   become: yes
@@ -139,7 +139,7 @@
 - name: deploy imageAI project to server
   synchronize:
     src: /mnt/c/data/projects/imageAI
-    dest: /data/projects/tf2/
+    dest: /data/projects/tf2
     rsync_opts:
       - "--no-motd"
       - "--exclude=.git"
@@ -200,7 +200,7 @@
     path: /etc/hosts
     line: "{{item.ip}} \t {{item.domain}}"
     create: yes
-  with_items: "{{vbs_domains}}"
+  with_items: "{{domains}}"
   #lookup('vars',as_hostname+'_domains' )
 
 
@@ -330,15 +330,15 @@
   become_user: root
   tags: disk_mount
   community.general.filesystem:
-    fstype: ext4
-    dev: /dev/sdb
+    fstype: xfs
+    dev: /dev/sda
 #    opts: -cc
 - name: make sure mount path exist
   become: yes
   become_user: root
   tags: disk_mount
   file:
-    path: /data/
+    path: /data1/
     state: directory
     owner: zhaoyufei
     group: hadoop
@@ -348,9 +348,9 @@
   become_user: root
   tags: disk_mount
   mount:
-    path: /data/
-    src: /dev/sdb
-    fstype: ext4
+    path: /data1/
+    src: /dev/sda
+    fstype: xfs
     state: mounted
 
 

@@ -16,9 +16,17 @@ users:
   - username: hadoop
     use_sudo: yes
     groups: hadoop
+  - username: hadoop
+    use_sudo: yes
+    groups: sudo
+  - username: zhaoyufei
+    use_sudo: yes
+    groups: hadoop
   - username: zhaoyufei
     use_sudo: yes
     groups: sudo
+
+
 
 
 #  - username: test2
@@ -28,22 +36,23 @@ users:
 
 
 
+#
+#domains:
+#  - ip: 172.16.104.220
+#    domain: primary.dev.vcg.com
+#  - ip: 172.16.108.176
+#    domain: gpu0.dev.vcg.com
+#  - ip: 172.16.237.152
+#    domain: gpu1.dev.vcg.com
+#
+#vbs_domains:
+#  - ip: 192.168.18.22
+#    domain: vb1.dev.yufei.com
+#  - ip: 192.168.18.23
+#    domain: vb2.dev.yufei.com
+#  - ip: 192.168.18.21
+#    domain: vb0.dev.yufei.com
 
-domains:
-  - ip: 172.16.104.220
-    domain: primary.dev.vcg.com
-  - ip: 172.16.108.176
-    domain: gpu0.dev.vcg.com
-  - ip: 172.16.237.152
-    domain: gpu1.dev.vcg.com
-
-vbs_domains:
-  - ip: 192.168.18.22
-    domain: vb1.dev.yufei.com
-  - ip: 192.168.18.23
-    domain: vb2.dev.yufei.com
-  - ip: 192.168.18.21
-    domain: vb0.dev.yufei.com
 
 
 
