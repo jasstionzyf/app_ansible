@@ -331,14 +331,14 @@
   tags: disk_mount
   community.general.filesystem:
     fstype: xfs
-    dev: /dev/sda
+    dev: /dev/nvme1n1
 #    opts: -cc
 - name: make sure mount path exist
   become: yes
   become_user: root
   tags: disk_mount
   file:
-    path: /data1/
+    path: /data2/
     state: directory
     owner: zhaoyufei
     group: hadoop
@@ -348,8 +348,8 @@
   become_user: root
   tags: disk_mount
   mount:
-    path: /data1/
-    src: /dev/sda
+    path: /data2/
+    src: /dev/nvme1n1
     fstype: xfs
     state: mounted
 

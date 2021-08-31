@@ -39,7 +39,7 @@ users:
 #
 #domains:
 #  - ip: 172.16.104.220
-#    domain: primary.dev.vcg.com
+#    domain: gpu0.dev.yufei.com
 #  - ip: 172.16.108.176
 #    domain: gpu0.dev.vcg.com
 #  - ip: 172.16.237.152

@@ -50,7 +50,11 @@
   tags: hadoop_stop_all
   async: 30
   poll: 2
-
+- name: hbase start
+  shell:  bash -l -c  '/data/apps/hbase-2.2.4/bin/start-hbase.sh'
+  tags: hbase_start
+  async: 30
+  poll: 2
 - name: hadoop home remove
   become: yes
   become_user: root

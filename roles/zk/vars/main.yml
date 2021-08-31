@@ -9,7 +9,7 @@ app_libary_path: /mnt/d/data/software/zk/{{app_version}}.tar.gz
 zk_home:  "{{app_rootDir}}{{appName}}/"
 
 
-
+appName: zookeeper-3.4.13
 
 
 
