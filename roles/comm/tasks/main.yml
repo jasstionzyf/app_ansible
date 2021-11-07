@@ -36,7 +36,7 @@
 #- name: Show the uptime in a certain format
 #  tags: test
 #  ansible.builtin.debug:
-#   msg: "{{test['es_config']['discovery_seed_hosts']|array_to_str}}"
+#   msg: "{{test['es_config']['discovery_seed_hosts']|array_to_str}}
 - name: Print all available facts
   tags: facts_debug
   ansible.builtin.debug:
@@ -58,6 +58,24 @@
   tags: test
   debug:
     msg: "{{ lookup('template', './templates/test.j2') }}"
+- name: Update and upgrade apt packages
+  become: yes
+  become_user: root
+  tags: apt-update
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+- name: Install a list of packages
+  become: yes
+  become_user: root
+  tags: comm_software_install
+  apt:
+    pkg:
+    - htop
+    - iotop
+    - screen
+
 
 - name: force kill a process given a identify
   become: yes
@@ -133,7 +151,14 @@
 #  become_user: root
 
 
-
+- name: deploy ytu project to server
+  synchronize:
+    src: /mnt/c/data/projects/yTo
+    dest: /data/projects/
+    rsync_opts:
+      - "--no-motd"
+      - "--exclude=.git"
+  tags: yTo_deploy
 
 
 - name: deploy imageAI project to server
@@ -225,7 +250,7 @@
   tags: ssh_setup
   template:
     dest: /etc/ssh/sshd_config
-    src: sshd_config
+    src: sshd_config-aliyun
     mode: u=rw,g=r,o=r
     owner: root
     group: root
@@ -331,14 +356,14 @@
   tags: disk_mount
   community.general.filesystem:
     fstype: xfs
-    dev: /dev/nvme1n1
+    dev: "{{disk_path}}"
 #    opts: -cc
 - name: make sure mount path exist
   become: yes
   become_user: root
   tags: disk_mount
   file:
-    path: /data2/
+    path: "{{mount_path}}"
     state: directory
     owner: zhaoyufei
     group: hadoop
@@ -348,8 +373,8 @@
   become_user: root
   tags: disk_mount
   mount:
-    path: /data2/
-    src: /dev/nvme1n1
+    path: "{{mount_path}}"
+    src: "{{disk_path}}"
     fstype: xfs
     state: mounted
 
