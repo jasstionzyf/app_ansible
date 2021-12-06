@@ -302,7 +302,13 @@
   become: yes
   become_user: root
 
-
+- name: Install zip   (state=present is optional)
+  become: yes
+  become_user: root
+  tags: jdk_present
+  apt:
+    name: zip
+    state: present
 - name: Remove the java_home
   become: yes
   become_user: root
@@ -326,7 +332,7 @@
   become_user: root
   tags: jdk_present
   unarchive:
-    src: "{{comm_libarys_path}}java/jdk-8u71-linux-x64.tar.gz"
+    src: "jdkPath"
     dest: "{{java_home_prefix}}"
     owner: root
     group: root
@@ -350,6 +356,41 @@
     mode: u=rw,g=r,o=r
     owner: root
     group: root
+
+
+- name: set up go
+  become: yes
+  become_user: root
+  tags: go_present
+  unarchive:
+    src: "{{goPath}}"
+    dest: "{{go_home_prefix}}"
+    owner: root
+    group: root
+
+
+- name: set up go
+  become: yes
+  become_user: root
+  tags: go_present
+  template:
+    dest: /etc/profile.d/go.sh
+    src: templates/go.sh.j2
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: root
+
+
+
+
+
+- name: Install xfs   (state=present is optional)
+  become: yes
+  become_user: root
+  tags: disk_mount
+  apt:
+    name: xfsprogs
+    state: present
 - name: init disk to a filesystem
   become: yes
   become_user: root
@@ -365,8 +406,8 @@
   file:
     path: "{{mount_path}}"
     state: directory
-    owner: zhaoyufei
-    group: hadoop
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
     recurse: yes
 - name: Mount File System
   become: yes

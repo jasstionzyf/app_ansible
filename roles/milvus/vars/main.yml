@@ -1,0 +1,33 @@
+---
+
+
+
+
+milvus_home: /data0/milvus/
+app_libary_path: /home/comm/software/milvus/milvus-2.0.0
+
+comm_libarys_path: /home/comm/software/
+
+
+appName: milvus
+
+
+
+
+
+milvus_environment:
+  - key: MILVUSCONF
+    value : /data0/milvus/configs/
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+---
+
+- name: upload milvus binary
+- name: upload configs folder
+- name: install apt package libopenblas-dev libgomp1 libtbb2 make
+  package: name="{{item}}" state=present
+  with_items:
+    - libopenblas-dev
+    - libgomp1
+    - libtbb2
+    - make

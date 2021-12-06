@@ -1,0 +1,101 @@
+---
+
+
+
+#- name: upload milvus binary
+#- name: upload configs folder
+- name: install apt package libopenblas-dev libgomp1 libtbb2 make
+  package: name="{{item}}" state=present
+  become: yes
+  become_user: root
+  tags: milvus_install
+  with_items:
+    - libopenblas-dev
+    - libgomp1
+    - libtbb2
+    - make
+
+- name: milvus home folder create
+  become: yes
+  become_user: root
+  tags: milvus_install
+  file:
+    path: "{{milvus_home}}"
+    state: directory
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
+    recurse: yes
+
+- name: milvus binary upload
+  copy:
+    dest: "{{milvus_home}}"
+    src: "{{comm_libarys_path}}milvus/bin"
+    mode: u=rw,g=r,o=r
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
+  become: yes
+  become_user: root
+  tags: milvus_install
+- name: copy orginal config files to conf folder
+  become: yes
+  become_user: root
+  tags: milvus_config
+  copy:
+    src: templates/configs
+    dest: "{{milvus_home}}"
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
+    mode: u=rwx,g=xr,o=x
+
+
+
+
+
+- name: milvus config files
+  template:
+    dest: "{{milvus_home}}/configs/{{item.dest}}"
+    src: templates/configs/{{item.src}}
+    mode: u=rw,g=r,o=r
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
+  become: yes
+  become_user: root
+  tags: milvus_config
+  with_items:
+        - {src: 'milvus.yaml',dest: 'milvus.yaml'}
+
+
+
+
+- name: upload libs to /usr/lib
+  tags: milvus_config
+  become: yes
+  become_user: root
+  copy:
+    src: "{{item}}"
+    dest: /usr/lib/
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
+    mode: u=rwx,g=rx,o=rx
+  with_fileglob:
+    - {{comm_libarys_path}}milvus/lib/*
+
+- name: Create  symbolic link for lib so file
+  tags: milvus_config
+  become: yes
+  become_user: root
+  ansible.builtin.file:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
+    mode: u=rwx,g=rx,o=rx
+    state: link
+  with_items:
+    - { src: '/usr/lib/libngt.so.1.12.0',dest: '/usr/lib/libngt.so.1' }
+    - { src: '/usr/lib/libngt.so.1.12.0',dest: '/usr/lib/libngt.so' }
+    - { src: '/usr/lib/libopenblas-r0.3.9.so',dest: '/usr/lib/libopenblas.so' }
+    - { src: '/usr/lib/libopenblas-r0.3.9.so',dest: '/usr/lib/libopenblas.so.0' }
+    - { src: '/usr/lib/libhandle.so.1.0.3',dest: '/usr/lib/libhandle.so.1' }
+
+

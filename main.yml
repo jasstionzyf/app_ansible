@@ -38,6 +38,14 @@
       become: yes
       vars:
       tags: mongo
+    - role: minio
+      become: yes
+      vars:
+      tags: minio
+    - role: milvus
+      become: yes
+      vars:
+      tags: milvus
 
 
 

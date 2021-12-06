@@ -1,0 +1,30 @@
+---
+- name: Install OpenBLAS dependencies make, gfortran
+  package: name="{{item}}" state=present
+  with_items:
+    - make
+    - gfortran
+
+- stat:
+    path: "{{openblas_path}}/include/openblas_config.h"
+  register: openblas_installed
+
+- name: Download and unarhive OpenBLAS tarball from GitHub
+  unarchive:
+    src: "https://github.com/xianyi/OpenBLAS/archive/v{{openblas_version}}.tar.gz"
+    dest: "/tmp/"
+    remote_src: True
+  when: openblas_installed.stat.exists == False
+
+- name: Install OpenBLAS
+  become: yes
+  become_user: root
+  tag: openblas_install
+  command: "{{item}}"
+  args:
+    chdir:
+
+  with_items:
+    - make FC=gfortran NO_AFFINITY={{openblas_no_affinity}} USE_OPENMP={{ openblas_use_openmp if openblas_use_openmp is defined else 1 if ansible_processor_vcpus > 1 else 0}} OMP_NUM_THREADS={{ansible_processor_vcpus}}
+    - make PREFIX="{{openblas_path}}" install
+  when: openblas_installed.stat.exists == False

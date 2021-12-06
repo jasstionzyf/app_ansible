@@ -1,17 +1,23 @@
 ---
-java_version: jdk1.8.0_71
+java_version: jdk1.8.0_311
+jdkFileName: jdk-8u311-linux-x64.tar.gz
 java_home_prefix: /usr/local/jdk/
 java_home: "{{java_home_prefix}}{{java_version}}"
 
-comm_libarys_path:  /mnt/d/data/software/
+comm_libarys_path:  /home/comm/software/
+jdkPath: "{{comm_libarys_path}}java/{{jdkFileName}}"
+goFileName: go1.16.4.linux-amd64.tar.gz
+goPath: "{{comm_libarys_path}}go/{{goFileName}}"
+go_home_prefix: /usr/local/
+go_home: "{{go_home_prefix}}go/"
 
-comm_user: zhaoyufei
 
 as_test: "{{java_home}}{{comm_user}}"
 
 
 
-
+# user: hadoop,zhaoyufei,comm
+# group: hadoop, sudo,comm
 users:
   - username: hadoop
     use_sudo: yes
@@ -25,6 +31,16 @@ users:
   - username: zhaoyufei
     use_sudo: yes
     groups: sudo
+  - username: comm
+    use_sudo: yes
+    groups: sudo
+  - username: comm
+    use_sudo: yes
+    groups: hadoop
+  - username: comm
+    use_sudo: yes
+    groups: comm
+
 
 
 
