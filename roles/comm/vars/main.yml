@@ -1,11 +1,14 @@
 ---
-java_version: jdk1.8.0_311
-jdkFileName: jdk-8u311-linux-x64.tar.gz
-java_home_prefix: /usr/local/jdk/
-java_home: "{{java_home_prefix}}{{java_version}}"
 
-comm_libarys_path:  /home/comm/software/
-jdkPath: "{{comm_libarys_path}}java/{{jdkFileName}}"
+
+
+comm_libarys_path:  /mnt/d/data/software/
+
+
+java_home: "/usr/local/jdk/"
+
+
+
 goFileName: go1.16.4.linux-amd64.tar.gz
 goPath: "{{comm_libarys_path}}go/{{goFileName}}"
 go_home_prefix: /usr/local/
@@ -42,7 +45,9 @@ users:
     groups: comm
 
 
-
+jdkPaths:
+  11.0.12: "{{comm_libarys_path}}java/11.0.12/jdk-11.0.12_linux-x64_bin.tar.gz"
+  1.8.0_311: "{{comm_libarys_path}}java/1.8.0_311/jdk-8u311-linux-x64.tar.gz"
 
 
 #  - username: test2

@@ -1,0 +1,37 @@
+---
+
+
+
+
+
+
+app_version: 1.2.0
+app_libary_dir: /mnt/d/data/software/opensearch/{{app_version}}/opensearch-{{app_version}}-linux-x64.tar.gz
+app_plugins_dir: /mnt/d/data/software/opensearch/{{app_version}}/plugins/
+ops_dashboard_dir: /mnt/d/data/software/opensearch/{{app_version}}/opensearch-dashboards-1.2.0-linux-x64.tar.gz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -78,7 +78,7 @@
     group: "{{op_user_group}}"
     mode: u=rwx,g=rx,o=rx
   with_fileglob:
-    - {{comm_libarys_path}}milvus/lib/*
+    - "{{comm_libarys_path}}milvus/lib/*"
 
 - name: Create  symbolic link for lib so file
   tags: milvus_config

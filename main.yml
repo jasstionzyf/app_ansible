@@ -46,6 +46,10 @@
       become: yes
       vars:
       tags: milvus
+    - role: opensearch
+      become: yes
+      vars:
+      tags: opensearch
 
 
 

@@ -1,0 +1,7 @@
+server.port: {{ops_dashboards['server.port']}}
+server.host: {{ip}}
+opensearch.hosts: {{ops_dashboards['opensearch.hosts']}}
+opensearch.ssl.verificationMode: none
+opensearch.username: {{ops_dashboards['opensearch.username']}}
+opensearch.password: "{{ops_dashboards['opensearch.password']}}"
+opensearch.requestHeadersWhitelist: [ authorization,securitytenant ]
