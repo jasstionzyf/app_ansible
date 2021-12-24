@@ -157,7 +157,7 @@
 
 - name: deploy ytu project to server
   synchronize:
-    src: /mnt/c/data/projects/yTo
+    src: /mnt/d/data/projects/yTo
     dest: /data/projects/
     rsync_opts:
       - "--no-motd"
@@ -167,8 +167,8 @@
 
 - name: deploy imageAI project to server
   synchronize:
-    src: /mnt/c/data/projects/imageAI
-    dest: /data/projects/tf2
+    src: /mnt/d/data/projects/yufei-imageAI
+    dest: /data/projects/
     rsync_opts:
       - "--no-motd"
       - "--exclude=.git"
