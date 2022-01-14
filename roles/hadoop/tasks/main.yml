@@ -123,6 +123,22 @@
 # hp_install: install hadoop and other all things that ready for to config and run  hadoop yarn cluster
 # hp_config:  after hp_install ,  config hadoop yarn related parameters and be ready to running
 # hp_setup: hp_install,hp_config,cgroup_init
+- name: hadoop related folders permission
+  become: yes
+  become_user: root
+  tags:
+    - hp_file_permission
+  file:
+    path: "{{item.folder}}"
+    owner: "{{item.owner}}"
+    group: hadoop
+    mode: u=rwx,g=xr,o=x
+    recurse: yes
+    state: directory
+  loop:
+#    - {'folder':'/data/apps/','owner':'root'}
+    - {'folder':"{{remote_hadoop_dir}}",'owner':'root'}
+    - {'folder':"{{hadoop_home}}logs",'owner':'zhaoyufei'}
 
 - name: hadoop change foler permission
   become: yes
@@ -130,6 +146,7 @@
   tags:
     - hp_install
     - hp_setup
+    - hp_config
   file:
     path: "{{hadoop_home}}"
     owner: root
@@ -150,7 +167,15 @@
     - hp_setup
   become: yes
   become_user: root
-- name: hadoop set up
+- name: container-executor config
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+    - hp_ce
+  shell: chown -R root {{hadoop_home}}bin/container-executor
+- name: container-executor config
   become: yes
   become_user: root
   tags:
@@ -195,6 +220,7 @@
   tags:
     - hp_install
     - hp_setup
+    - hp_config
   file:
     path: "{{hadoop_home}}etc/hadoop"
     owner: root

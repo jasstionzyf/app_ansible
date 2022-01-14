@@ -21,28 +21,28 @@ as_test: "{{java_home}}{{comm_user}}"
 
 # user: hadoop,zhaoyufei,comm
 # group: hadoop, sudo,comm
-users:
-  - username: hadoop
-    use_sudo: yes
-    groups: hadoop
-  - username: hadoop
-    use_sudo: yes
-    groups: sudo
-  - username: zhaoyufei
-    use_sudo: yes
-    groups: hadoop
-  - username: zhaoyufei
-    use_sudo: yes
-    groups: sudo
-  - username: comm
-    use_sudo: yes
-    groups: sudo
-  - username: comm
-    use_sudo: yes
-    groups: hadoop
-  - username: comm
-    use_sudo: yes
-    groups: comm
+#users:
+#  - username: hadoop
+#    use_sudo: yes
+#    groups: hadoop
+#  - username: hadoop
+#    use_sudo: yes
+#    groups: sudo
+#  - username: zhaoyufei
+#    use_sudo: yes
+#    groups: hadoop
+#  - username: zhaoyufei
+#    use_sudo: yes
+#    groups: sudo
+#  - username: comm
+#    use_sudo: yes
+#    groups: sudo
+#  - username: comm
+#    use_sudo: yes
+#    groups: hadoop
+#  - username: comm
+#    use_sudo: yes
+#    groups: comm
 
 
 jdkPaths:

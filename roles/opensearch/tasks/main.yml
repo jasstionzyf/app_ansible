@@ -13,13 +13,16 @@
 
 - name: Disable swap (if configured).
   become: yes
-  tags: ops_config
+  become_user: root
+
+
+  tags: ops_syscfg
   command: swapoff -a
 
 
 - name: Remove swapfile from /etc/fstab
   become: yes
-  tags: ops_config
+  tags: ops_syscfg
   mount:
     name: "{{ item }}"
     fstype: swap
@@ -30,7 +33,7 @@
 
 - name: Set vm.max_map_count in sysctl.conf
   become: yes
-  tags: ops_config
+  tags: ops_syscfg
   sysctl:
     name: vm.max_map_count
     value: '262144'
@@ -38,11 +41,26 @@
 
 - name: Set open files limit in sysctl.conf
   become: yes
-  tags: ops_config
+  tags: ops_syscfg
   sysctl:
     name: fs.file-max
     value: '65536'
     state: present
+- name: set max nofile in /etc/security/limits.conf
+  tags: ops_syscfg
+  become: yes
+  become_user: root
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: "{{item}}"
+    create: yes
+  with_items:
+    - '*        hard nofile 65536'
+    - '*        soft nofile 65536'
+    - 'test'
+
+
+
 
 
 
@@ -67,8 +85,16 @@
 - name: opensearch start
   become: yes
   become_user: "{{op_user}}"
-  shell:  bash -l -c ' nohup {{ops_cfg.ops_home}}/bin/opensearch > ./opensearch.out &'
+  shell:  bash -l -c ' nohup {{ops_cfg.ops_home}}/bin/opensearch > ~/opensearch.out &'
   tags: ops_start
+  async: 30
+  poll: 2
+
+- name: ops dashboard start
+  become: yes
+  become_user: "{{op_user}}"
+  shell:  bash -l -c ' nohup {{ops_dashboards.home}}/bin/opensearch-dashboards > ./opensearch-dashboards.out &'
+  tags: ops_dashboard_start
   async: 30
   poll: 2
 - name: make sure all related folders present, if present do nothing
@@ -207,7 +233,7 @@
 - name: update plugins
   become: yes
   become_user: root
-  tags: ops_plugins
+  tags: 'ops_plugins'
   copy:
     src: "{{item.src}}"
     dest: "{{item.dest}}"

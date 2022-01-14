@@ -1,0 +1,211 @@
+all:
+  hosts:
+  children:
+    guazi_milvus:
+      hosts:
+        guazi_milvus_0:
+          ansible_port: 22
+          ansible_host: 10.16.210.147
+          ip: 0.0.0.0
+          as_hostname: m0.dev.guazi.com
+
+          domains:
+            - ip: 10.16.210.147
+              domain: m0.dev.guazi.com
+            - ip: 10.16.210.148
+              domain: m1.dev.guazi.com
+
+
+          vars:
+
+        guazi_milvus_1:
+          ansible_port: 22
+          ansible_host: 10.16.210.148
+          ip: 0.0.0.0
+          as_hostname: m1.dev.guazi.com
+          domains:
+            - ip: 10.16.210.147
+              domain: m0.dev.guazi.com
+            - ip: 10.16.210.148
+              domain: m1.dev.guazi.com
+
+
+
+
+
+          vars:
+      vars:
+        op_user: comm
+        op_user_group: comm
+        app_rootDir: /data0/apps/
+        app_dataRootDir: /data0/app_data/
+        app_logRootDir: /data0/app_logs/
+        app_confRootDir: /data0/app_conf/
+    centos_test:
+      hosts:
+        centos_dev1:
+          ansible_port: 22
+          ansible_host: 10.112.97.204
+          ip: 10.112.97.204
+          as_hostname: cvb0.dev.yufei.com
+          domains:
+            - ip: 10.112.97.204
+              domain: cvb0.dev.yufei.com
+
+          op_user: zhaoyufei
+          op_user_group: hadoop
+
+          ops_dashboards:
+
+            home: /data/apps/ops_dashboards/
+            server.port: 5601
+            opensearch.hosts: http://cvb0.dev.yufei.com:9200/
+            opensearch.username: yufei.zhao
+            opensearch.password: 123546
+          ops_cfgs:
+            - node.roles:
+                - master
+                - data
+              cluster.name: follower_dev
+              discovery.seed_hosts:
+                - gpu0.dev.yufei.com:9302
+                - gpu0.dev.yufei.com:9303
+              cluster.initial_master_nodes:
+                - follower_dev_1
+                - follower_dev_2
+              bootstrap.memory_lock: false
+
+              node.name: follower_dev_1
+              http.port: 9202
+              transport.tcp.port: 9302
+
+              ops_home: /data/apps/ops_follower_dev_1/
+              ops_cfgDir: /data/apps/ops_cfg_follower_dev_1/
+              ops_dataDir: /data2/ops_data_follower_dev_1/
+              ops_logDir: /data2/ops_logs_follower_dev_1/
+              xms: -Xms4g
+              xmx: -Xmx4g
+            - node.roles:
+                - master
+                - data
+              cluster.name: follower_dev
+              discovery.seed_hosts:
+                - gpu0.dev.yufei.com:9302
+                - gpu0.dev.yufei.com:9303
+              cluster.initial_master_nodes:
+                - follower_dev_1
+                - follower_dev_2
+              bootstrap.memory_lock: false
+              node.name: follower_dev_2
+              http.port: 9203
+              transport.tcp.port: 9303
+
+              ops_home: /data/apps/ops_follower_dev_2/
+              ops_cfgDir: /data/apps/ops_cfg_follower_dev_2/
+              ops_dataDir: /data2/ops_data_follower_dev_2/
+              ops_logDir: /data2/ops_logs_follower_dev_2/
+              #
+              xms: -Xms4g
+              xmx: -Xmx4g
+
+
+          ops_cfg:
+
+            node.roles:
+              - master
+              - data
+              # only need for follower node
+#              - remote_cluster_client
+            cluster.name: comm_dev
+#            cluster.name: follower_dev
+#            discovery.seed_hosts:
+#              - gpu0.dev.yufei.com:9302
+#              - gpu0.dev.yufei.com:9303
+#
+#            cluster.initial_master_nodes:
+#              - follower_dev_1
+#              - follower_dev_2
+            discovery.seed_hosts:
+              - cvb0.dev.yufei.com:9300
+              - cvb0.dev.yufei.com:9301
+
+            cluster.initial_master_nodes:
+              - comm_dev_1
+              - comm_dev_2
+
+
+
+
+            bootstrap.memory_lock: false
+
+
+
+
+            node.name: com_dev_1
+            http.port: 9200
+            transport.tcp.port: 9300
+
+            ops_home: /data/apps/ops_com_dev_1/
+            ops_cfgDir: /data/apps/ops_cfg_com_dev_1/
+            ops_dataDir: /data2/ops_data_com_dev_1/
+            ops_logDir: /data2/ops_logs_com_dev_1/
+
+#            node.name: com_dev_2
+#            http.port: 9201
+#            transport.tcp.port: 9301
+#
+#            ops_home: /data/apps/ops_com_dev_2/
+#            ops_cfgDir: /data/apps/ops_cfg_com_dev_2/
+#            ops_dataDir: /data2/ops_data_com_dev_2/
+#            ops_logDir: /data2/ops_logs_com_dev_2/
+
+
+#
+#            node.name: follower_dev_1
+#            http.port: 9202
+#            transport.tcp.port: 9302
+#
+#            ops_home: /data/apps/ops_follower_dev_1/
+#            ops_cfgDir: /data/apps/ops_cfg_follower_dev_1/
+#            ops_dataDir: /data2/ops_data_follower_dev_1/
+#            ops_logDir: /data2/ops_logs_follower_dev_1/
+
+#
+#            node.name: follower_dev_2
+#            http.port: 9203
+#            transport.tcp.port: 9303
+#
+#            ops_home: /data/apps/ops_follower_dev_2/
+#            ops_cfgDir: /data/apps/ops_cfg_follower_dev_2/
+#            ops_dataDir: /data2/ops_data_follower_dev_2/
+#            ops_logDir: /data2/ops_logs_follower_dev_2/
+#
+            xms: -Xms1g
+            xmx: -Xmx1g
+
+
+
+      vars:
+        users:
+          - username: hadoop
+            use_sudo: yes
+            groups: hadoop
+          - username: hadoop
+            use_sudo: yes
+            groups: sudo
+          - username: zhaoyufei
+            use_sudo: yes
+            groups: hadoop
+          - username: zhaoyufei
+            use_sudo: yes
+            groups: sudo
+          - username: comm
+            use_sudo: yes
+            groups: sudo
+          - username: comm
+            use_sudo: yes
+            groups: hadoop
+          - username: comm
+            use_sudo: yes
+            groups: comm
+

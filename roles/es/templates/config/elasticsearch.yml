@@ -93,3 +93,4 @@ node.roles: {{es_config['node.roles']}}
 # Require explicit names when deleting indices:
 #
 #action.destructive_requires_name: true
+#xpack.security.enabled: true

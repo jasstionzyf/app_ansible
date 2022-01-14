@@ -254,7 +254,7 @@
   tags: ssh_setup
   template:
     dest: /etc/ssh/sshd_config
-    src: sshd_config-aliyun
+    src: sshd_config
     mode: u=rw,g=r,o=r
     owner: root
     group: root
@@ -300,8 +300,8 @@
   lineinfile:
     dest: /etc/sudoers
     state: present
-    regexp: '^%sudo'
-    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
   become: yes
   become_user: root
