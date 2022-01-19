@@ -123,20 +123,28 @@
 # hp_install: install hadoop and other all things that ready for to config and run  hadoop yarn cluster
 # hp_config:  after hp_install ,  config hadoop yarn related parameters and be ready to running
 # hp_setup: hp_install,hp_config,cgroup_init
-
-- name: hadoop change foler permission
+- name: hadoop related folders permission
   become: yes
   become_user: root
   tags:
-    - hp_install
-    - hp_setup
+    - hp_file_permission
   file:
-    path: "{{hadoop_home}}"
-    owner: root
+    path: "{{item.folder}}"
+    owner: "{{item.owner}}"
     group: hadoop
     mode: u=rwx,g=xr,o=x
     recurse: yes
     state: directory
+  loop:
+    - { 'folder': "{{remote_hadoop_dir}}",'owner': 'root' }
+
+    - {'folder':"{{hadoop_home}}",'owner':'root'}
+    - {'folder':"{{hadoop_home}}logs",'owner':'zhaoyufei'}
+    - {'folder':"{{hadoop_home}}etc/hadoop",'owner':'root'}
+    - {'folder':"{{hbase_home}}logs",'owner':'zhaoyufei'}
+
+
+
 
 - name: upload hadoop to remote machine
   unarchive:
@@ -150,7 +158,15 @@
     - hp_setup
   become: yes
   become_user: root
-- name: hadoop set up
+- name: container-executor config
+  become: yes
+  become_user: root
+  tags:
+    - hp_install
+    - hp_setup
+    - hp_ce
+  shell: chown -R root {{hadoop_home}}bin/container-executor
+- name: container-executor config
   become: yes
   become_user: root
   tags:
@@ -160,48 +176,10 @@
   shell: chmod 6050 {{hadoop_home}}bin/container-executor
 
 
-- name: hadoop change logs folder permission
-  become: yes
-  become_user: root
-  tags:
-    - hp_install
-    - hp_setup
-    - hp_logs
-  file:
-    path: "{{hadoop_home}}logs"
-    owner: root
-    group: hadoop
-    mode: u=rwx,g=rwx,o=x
-    recurse: yes
-    state: directory
 
 
-- name: hadoop change config  permission
-  become: yes
-  become_user: root
-  tags:
-    - hp_install
-    - hp_setup
-  file:
-    path: "{{hadoop_home}}etc/hadoop/"
-    owner: root
-    group: hadoop
-    mode: u=rw,g=r,o=r
-    recurse: yes
-    state: directory
-- name: hadoop change config  permission
-  become: yes
-  become_user: root
-  tags:
-    - hp_install
-    - hp_setup
-  file:
-    path: "{{hadoop_home}}etc/hadoop"
-    owner: root
-    group: hadoop
-    mode: u=rwx,g=rx,o=rx
-    recurse: no
-    state: directory
+
+
 
 
 - name: cgroup folder create
@@ -350,15 +328,4 @@
 
 
 
-- name: hbase change logs folder permission
-  become: yes
-  become_user: root
-  tags: hbase_config
-  file:
-    path: "{{hbase_home}}logs"
-    owner: root
-    group: hadoop
-    mode: u=rwx,g=rwx,o=x
-    recurse: yes
-    state: directory
 

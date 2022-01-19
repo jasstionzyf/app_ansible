@@ -1,6 +1,6 @@
 ---
 hadoop_version: hadoop-3.2.1
-remote_hadoop_dir: /data/apps/
+remote_hadoop_dir: /bd/apps/
 
 hbase_version: hbase-2.2.4
 hbase_libary_path: /mnt/d/data/software/hbase/{{hbase_version}}-bin.tar.gz
