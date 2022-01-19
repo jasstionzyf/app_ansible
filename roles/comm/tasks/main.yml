@@ -167,7 +167,7 @@
 
 - name: deploy imageAI project to server
   synchronize:
-    src: /mnt/d/data/projects/yufei-imageAI
+    src: /mnt/c/data/projects/yufei-imageAI
     dest: /data/projects/
     rsync_opts:
       - "--no-motd"
