@@ -14,6 +14,15 @@ appName: elasticsearch-7.11.2
 
 
 
+#kibana:
+
+
+kibana_package: kibana
+kibana_package_state: present
+
+
+kibana_config_template: kibana.yml.j2
+kibana_config_file_path: /etc/kibana/kibana.yml
 
 
 
