@@ -10,25 +10,18 @@
 
 
 kafka_version: kafka_2.12-2.4.0
-kafka_libary_dir: /mnt/d/data/software/kafka/{{kafka_version}}.tgz
-
-
+kafka_libary_dir: /mnt/d/data/software/kafka/
+kafka_path: "{{kafka_libary_dir}}/{{kafka_version}}.tgz"
+cmak_version: 1.3.3.4
+cmak_path: "{{kafka_libary_dir}}/kafka-manager-{{cmak_version}}.zip"
+cmak_home: "{{cmak.rootFolder}}kafka-manager-{{cmak_version}}"
 
 appName: kafka_2.12-2.4.0
 
 
-#kafka sever config, those config also can be placed on host env
-zk_host: vb0.dev.yufei.com:2181
 
 
-#24 hours
-retention_hours: 24
-#512M
-retention_bytes: 512000000
 
-rebalance_delay_ms: 0
-
-num_partitions: 10
 
 
 
