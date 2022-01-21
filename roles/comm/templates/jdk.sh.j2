@@ -1,6 +1,6 @@
-export JAVA_HOME={{ java_home }}
+export JAVA_HOME={{ jdk_cfg.java_home }}
 export PATH=$JAVA_HOME/bin:$PATH
-export JRE_HOME={{ java_home }}jre
+export JRE_HOME={{ jdk_cfg.java_home }}jre/
 export CLASSPATH=$JAVA_HOME/bin:$PATH
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH
 
