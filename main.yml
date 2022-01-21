@@ -1,5 +1,8 @@
 ---
 - hosts: all
+#  become: yes
+#  become_method: enable
+#  become_user: root
   vars:
     app_libary_root_dir: /mnt/d/data/software/
   gather_facts: true
@@ -50,6 +53,7 @@
       become: yes
       vars:
       tags: opensearch
+
 
 
 
