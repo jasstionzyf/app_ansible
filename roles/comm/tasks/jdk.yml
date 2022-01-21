@@ -1,0 +1,48 @@
+---
+
+
+
+- name: Remove the java_home
+  become: yes
+  tags: jdk_present
+  file:
+    state: absent
+    path: "{{jdk_cfg.java_home}}"
+- name: set up jdk
+  become: yes
+  tags: jdk_present
+  file:
+    path: "{{jdk_cfg.java_home}}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+
+- name: set up jdk
+  become: yes
+  tags: jdk_present
+  unarchive:
+    src: "{{jdk_cfg.jdk_lib_path}}"
+    dest: "{{jdk_cfg.java_home}}"
+    extra_opts: [--strip-components=1]
+    owner: root
+    group: root
+
+- name: set up jdk
+  become: yes
+  tags: jdk_present
+  file:
+    path: "{{jdk_cfg.java_home}}bin"
+    mode: u=rwx,g=rx,o=rx
+    recurse: yes
+
+- name: set up jdk
+  become: yes
+  tags: jdk_present
+  template:
+    dest: /etc/profile.d/jdk.sh
+    src: templates/jdk.sh.j2
+    mode: u=rw,g=r,o=r
+    owner: root
+    group: root
+  when: "{{jdk_cfg.default_set}}"
