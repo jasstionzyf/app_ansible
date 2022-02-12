@@ -7,7 +7,7 @@
 
 app_version: elasticsearch-7.11.2
 app_libary_dir: /mnt/d/data/software/elastic/{{app_version}}.tar.gz
-es_plugins_dir: /mnt/d/data/software/elastic/plugins
+es_plugins_dir: /mnt/c/Users/jasstion/OneDrive/software/elastic/plugins
 appName: elasticsearch-7.11.2
 
 

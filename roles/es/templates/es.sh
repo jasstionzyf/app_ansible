@@ -4,8 +4,9 @@ export ES_HOME={{app_rootDir}}{{appName}}/
 export ES_TMPDIR={{app_dataRootDir}}{{appName}}/
 
 export PID_DIR={{app_dataRootDir}}{{appName}}/
+{% if es_config['ES_JAVA_OPTS'] %}
 export ES_JAVA_OPTS="{{es_config['ES_JAVA_OPTS']}}"
-
+{% endif %}
 
 
 

@@ -110,6 +110,17 @@
     value: "{{es_config['vm.max_map_count']}}"
     state: present
 
-
+- name: update limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    state: present
+    line: "{{item}}"
+  loop:
+    - "{{op_user}} soft memlock unlimited"
+    - "{{op_user}} hard memlock unlimited"
+  become: yes
+  become_user: root
+  tags:
+    - es_config
 
 
