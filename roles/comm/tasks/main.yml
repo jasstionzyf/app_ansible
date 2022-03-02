@@ -367,6 +367,14 @@
     src: "{{disk_path}}"
     fstype: xfs
     state: mounted
+- name: write to fstab
+  become: yes
+  become_user: root
+  tags: disk_mount
+  lineinfile:
+    path: /etc/fstab
+    line: "{{disk_path}} \t {{mount_path}} \t 0 \t 0"
+    create: yes
 
 
 
