@@ -53,6 +53,10 @@
       become: yes
       vars:
       tags: opensearch
+    - role: pulsar
+      become: yes
+      vars:
+      tags: pulsar
 
 
 
