@@ -77,7 +77,8 @@ jdkPaths:
 
 
 
-
+disk_path: /dev/sda
+mount_path: /data3/
 
 
 test:
