@@ -14,7 +14,7 @@
 
 - name: start app
   become: yes
-  become_user: "{{ops_user}}"
+  become_user: "{{op_user}}"
 
   shell:  bash -l -c ' nohup {{app_rootDir}}{{appName}}/bin/elasticsearch &'
 #  when: as_hadoop_slave

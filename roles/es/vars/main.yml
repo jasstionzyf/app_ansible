@@ -5,13 +5,16 @@
 
 
 
-app_version: elasticsearch-7.11.2
-app_libary_dir: /mnt/d/data/software/elastic/{{app_version}}.tar.gz
-es_plugins_dir: /mnt/d/data/software/elastic/plugins
-appName: elasticsearch-7.11.2
+#app_version: elasticsearch-7.11.2
+#app_libary_dir: /mnt/d/data/software/elastic/{{app_version}}.tar.gz
+#es_plugins_dir: /mnt/d/data/software/elastic/plugins
+#appName: elasticsearch-7.11.2
 
-
-
+prefix: /mnt/c/Users/zhaoyufei/OneDrive/software/
+app_version: elasticsearch-7.10.0
+app_libary_dir: "{{prefix}}elastic/{{app_version}}.tar.gz"
+es_plugins_dir: "{{prefix}}elastic/plugins"
+appName: elasticsearch-7.10.0
 
 
 
