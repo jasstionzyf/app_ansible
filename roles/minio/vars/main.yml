@@ -1,0 +1,34 @@
+---
+
+
+
+
+
+
+app_libary_dir: /mnt/c/Users/jasstion/OneDrive/software/minio/minio
+appName: minio
+
+
+MINIO_ACCESS_KEY: zhaoyufei
+MINIO_SECRET_KEY: 12345678
+
+MINIO_ROOT_USER: zhaoyufei
+MINIO_ROOT_PASSWORD: 12345678
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
