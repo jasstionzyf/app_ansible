@@ -14,7 +14,7 @@
 
 - name: start app
   become: yes
-  become_user: zhaoyufei
+  become_user: "{{ops_user}}"
 
   shell:  bash -l -c ' nohup {{app_rootDir}}{{appName}}/bin/elasticsearch &'
 #  when: as_hadoop_slave
@@ -27,8 +27,8 @@
   tags: es_install
   file:
     path: "{{item}}"
-    owner: zhaoyufei
-    group: hadoop
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
     mode: u=rwx,g=xr,o=x
     recurse: yes
     state: directory
@@ -48,8 +48,8 @@
     dest: "{{app_rootDir}}{{appName}}/"
     extra_opts: [--strip-components=1]
 #    creates: "{{app_rootDir}}{{appName}}/"
-    owner: zhaoyufei
-    group: hadoop
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
     mode: u=rwx,g=xr,o=x
 - name: deploy plugins
   become: yes
@@ -58,8 +58,8 @@
   copy:
     src: "{{es_plugins_dir}}"
     dest: "{{app_rootDir}}{{appName}}/"
-    owner: zhaoyufei
-    group: hadoop
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
     mode: u=rwx,g=xr,o=x
 
 - name: copy orginal config files to conf folder
@@ -69,8 +69,8 @@
   copy:
     src: templates/config/
     dest: "{{app_confRootDir}}{{appName}}"
-    owner: zhaoyufei
-    group: hadoop
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
     mode: u=rwx,g=xr,o=x
 
 - name: app config files
@@ -78,8 +78,8 @@
     dest: "{{app_confRootDir}}{{appName}}/{{item.dest}}"
     src: templates/config/{{item.src}}
     mode: u=rw,g=r,o=r
-    owner: zhaoyufei
-    group: hadoop
+    owner: "{{op_user}}"
+    group: "{{op_user_group}}"
   become: yes
   become_user: root
   tags: es_config
