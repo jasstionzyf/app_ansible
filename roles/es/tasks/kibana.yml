@@ -1,0 +1,42 @@
+---
+- name: Ensure libselinux-python on CentOS 6.x
+  tags: kibana_setup
+  become: yes
+  yum: name=libselinux-python state=present update_cache=yes
+
+
+- name: RedHat - add Elasticsearch repo
+  become: yes
+  template:
+    src: 'elasticsearch.repo'
+    dest: '/etc/yum.repos.d/elasticsearch-{{ es_repo_name }}.repo'
+
+- name: Add Kibana repository.
+  tags: kibana_setup
+  apt_repository:
+    repo: 'deb https://artifacts.elastic.co/packages/{{ kibana_version }}/apt stable main'
+    state: present
+    update_cache: true
+
+- name: Install Kibana.
+  tags: kibana_setup
+  package:
+    name: "{{ kibana_package }}"
+    state: "{{ kibana_package_state }}"
+
+- name: Ensure Kibana is started and enabled at boot.
+  tags: kibana_run
+  service:
+    name: kibana
+    state: restarted
+    enabled: true
+
+- name: Copy Kibana configuration.
+  tags: kibana_config
+  template:
+    src: "{{ kibana_config_template }}"
+    dest: "{{ kibana_config_file_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart kibana

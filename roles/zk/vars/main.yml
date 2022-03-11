@@ -1,5 +1,5 @@
 ---
-zk_host: "{{as_hostname}}:2181"
+zk_host: "{{as_hostname}}:{{zk_cfg['port']}}"
 
 
 app_version: zookeeper-3.4.13

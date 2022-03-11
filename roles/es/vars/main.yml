@@ -17,6 +17,12 @@ es_plugins_dir: "{{prefix}}elastic/plugins"
 appName: elasticsearch-7.10.0
 
 
+kibana_package: kibana
+kibana_package_state: present
+
+
+kibana_config_template: kibana.yml.j2
+kibana_config_file_path: /etc/kibana/kibana.yml
 
 
 
