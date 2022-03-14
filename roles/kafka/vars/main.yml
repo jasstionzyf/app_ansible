@@ -10,11 +10,16 @@
 
 
 kafka_version: kafka_2.12-2.4.0
-kafka_libary_dir: /mnt/d/data/software/kafka/{{kafka_version}}.tgz
+kafka_root_dir: /mnt/d/OneDrive/software/kafka/
+kafka_libary_dir: "{{kafka_root_dir}}{{kafka_version}}.tgz"
 
-
+conn_plugins_dir: "{{kafka_root_dir}}conn-plugins/"
 
 appName: kafka_2.12-2.4.0
+
+
+
+kafka_conn_plugins_path: "{{app_rootDir}}{{appName}}/conn-plugins/"
 
 
 
