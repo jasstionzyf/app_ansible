@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (tf2)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="imageAI" />
+    <orderEntry type="module" module-name="subl" />
+    <orderEntry type="module" module-name="Python3WebSpider" />
+    <orderEntry type="module" module-name="scrapy_demo" />
+    <orderEntry type="module" module-name="ansible-kafka-manager" />
+    <orderEntry type="module" module-name="ansible-role-kibana" />
+    <orderEntry type="module" module-name="logrocket" />
+    <orderEntry type="module" module-name="GerapyPyppeteer" />
+    <orderEntry type="module" module-name="1To" />
+    <orderEntry type="module" module-name="milvus-demo" />
+    <orderEntry type="module" module-name="imageAI" />
+  </component>
+</module>

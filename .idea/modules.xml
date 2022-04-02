@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../yTo/.idea/1To.iml" filepath="$PROJECT_DIR$/../yTo/.idea/1To.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/app_ansible.iml" filepath="$PROJECT_DIR$/.idea/app_ansible.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../imageAI/.idea/imageAI.iml" filepath="$PROJECT_DIR$/../imageAI/.idea/imageAI.iml" />
     </modules>
   </component>
 </project>

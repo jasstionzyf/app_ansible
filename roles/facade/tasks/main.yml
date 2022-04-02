@@ -1,0 +1,5 @@
+---
+- name: local action test
+  tags: local_action_test
+  local_action: ansible.builtin.command ls -l
+- include: hadoop.yml

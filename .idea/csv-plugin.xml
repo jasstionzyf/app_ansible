@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CsvFileAttributes">
+    <option name="attributeMap">
+      <map>
+        <entry key="C:\data\projects\GerapyPyppeteer\example\run.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\logrocket\logrocket\test\comm.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\scrapy_demo\douban\run_spider.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\comm\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\comm\test\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\learn\faissTest\faissIndexTest.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\learn\faissTest\faissTest.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\learn\numpy_op.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\learn\python_test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\batchJobs\yTo\generateImageTfrecordsJob.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\comm\redisOps\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\comm\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\cpVerify\locustfile.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\cpVerify\test\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\featuresRetrive\comm.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\featuresRetrive\featuresIndexBuild\builders.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\featuresRetrive\featuresIndexHelper.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\featuresRetrive\featuresRetriveApp.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\localFeatures\localFeaturesMatch.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\localFeatures\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\localFeatures\test\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\modelInfer\test\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\data\projects\yufei-imageAI\vcgImageAI\subProjects\rest\test\test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\tools\miniconda3\Lib\site-packages\PIL\Image.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,17 @@
+---
+- name: facade_test
+  become: yes
+  become_user: root
+  tags: facade_test
+  shell:  "{{item}}"
+  loop:
+    - echo '1'
+    - echo '2'
+    - echo '3'
+- name facade_test1
+  tags: facade_test1
+  local_action: "{{item}}"
+  loop:
+    - echo '1'
+    - echo '2'
+    - echo '3'
